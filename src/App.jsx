@@ -127,18 +127,20 @@ function App() {
 
               <p className="eyebrow">HELLO, I'M PRAGYA BISHT</p>
               <h1>
-                Building digital
+                Building Web Experiences.
                 <br />
-                experiences<span className="accent">.</span>
+                Developing Full-Stack Solutions<span className="accent">.</span>
                 <br />
-                <span className="outline-text">One project at a time.</span>
+                
               </h1>
 
-              <p className="hero-description">
-                Final-year Computer Science student interested in web
-                development, full-stack applications, and building useful
-                products through code.
-              </p>
+              <p>
+  Final-year Computer Science student at Galgotias University,
+  focused on web development, full-stack applications, and
+  software engineering. Passionate about building responsive,
+  user-friendly applications and solving real-world problems
+  through technology.
+</p>
 
               <div className="hero-actions">
                 <a className="button button-primary" href="#projects">
