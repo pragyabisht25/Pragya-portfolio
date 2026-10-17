@@ -227,17 +227,13 @@ function App() {
               <div className="floating-tag tag-top">
                 <span className="tag-symbol">{"</>"}</span>
                 <span>
-                  <b>Web Development</b>
-                  <small>Learning by building</small>
+                  
                 </span>
               </div>
 
               <div className="floating-tag tag-bottom">
                 <span className="tag-symbol tag-purple">✳</span>
-                <span>
-                  <b>Always learning</b>
-                  <small>One step at a time</small>
-                </span>
+                
               </div>
 
               
