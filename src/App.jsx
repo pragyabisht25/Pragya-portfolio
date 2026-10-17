@@ -59,24 +59,30 @@ const skillGroups = [
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const closeMenu = () => setMenuOpen(false);
 
   const handleContact = (event) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = form.get("name");
-    const email = form.get("email");
-    const message = form.get("message");
+  event.preventDefault();
 
-    const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\n${message}`
-    );
+  const formData = new FormData(event.currentTarget);
+  const name = formData.get("name") || "";
+  const email = formData.get("email") || "";
+  const message = formData.get("message") || "";
 
-    window.location.href =
-      `mailto:pragyabisht25@gmail.com?subject=${subject}&body=${body}`;
-  };
+  const gmailUrl = new URL("https://mail.google.com/mail/");
+  gmailUrl.searchParams.set("view", "cm");
+  gmailUrl.searchParams.set("fs", "1");
+  gmailUrl.searchParams.set("to", "pragyabisht25@gmail.com");
+  gmailUrl.searchParams.set("su", `Portfolio enquiry from ${name}`);
+  gmailUrl.searchParams.set(
+    "body",
+    `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+  );
+
+  window.location.href = gmailUrl.toString();
+};
 
   return (
     <>
@@ -84,7 +90,9 @@ function App() {
         <nav className="navbar container">
           <a className="brand" href="#home" onClick={closeMenu}>
             <span className="brand-mark">P.</span>
-            <span>pragya<span className="brand-dot">.</span></span>
+            <span>
+              pragya<span className="brand-dot">.</span>
+            </span>
           </a>
 
           <button
@@ -126,21 +134,21 @@ function App() {
               </div>
 
               <p className="eyebrow">HELLO, I'M PRAGYA BISHT</p>
+
               <h1>
                 Building Web Experiences.
                 <br />
-                Developing Full-Stack Solutions<span className="accent">.</span>
-                <br />
-                
+                Developing Full-Stack Solutions
+                <span className="accent">.</span>
               </h1>
 
               <p>
-  Final-year Computer Science student at Galgotias University,
-  focused on web development, full-stack applications, and
-  software engineering. Passionate about building responsive,
-  user-friendly applications and solving real-world problems
-  through technology.
-</p>
+                Final-year Computer Science student at Galgotias University,
+                focused on web development, full-stack applications, and
+                software engineering. Passionate about building responsive,
+                user-friendly applications and solving real-world problems
+                through technology.
+              </p>
 
               <div className="hero-actions">
                 <a className="button button-primary" href="#projects">
@@ -177,7 +185,11 @@ function App() {
 
               <div className="profile-card">
                 <div className="profile-card-top">
-                  <span className="window-dots"><i /><i /><i /></span>
+                  <span className="window-dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
                   <span className="card-label">DEV PROFILE / 2026</span>
                 </div>
 
@@ -214,12 +226,18 @@ function App() {
 
               <div className="floating-tag tag-top">
                 <span className="tag-symbol">{"</>"}</span>
-                <span><b>Web Development</b><small>Learning by building</small></span>
+                <span>
+                  <b>Web Development</b>
+                  <small>Learning by building</small>
+                </span>
               </div>
 
               <div className="floating-tag tag-bottom">
                 <span className="tag-symbol tag-purple">✳</span>
-                <span><b>Always learning</b><small>One step at a time</small></span>
+                <span>
+                  <b>Always learning</b>
+                  <small>One step at a time</small>
+                </span>
               </div>
 
               <span className="visual-index">FIG. 01 — THE DEVELOPER</span>
@@ -277,7 +295,9 @@ function App() {
                 </div>
                 <div className="cgpa-row">
                   <span>ACADEMIC PERFORMANCE</span>
-                  <strong>8.3 <small>/ 10 CGPA</small></strong>
+                  <strong>
+                    8.3 <small>/ 10 CGPA</small>
+                  </strong>
                 </div>
               </div>
             </div>
@@ -303,7 +323,21 @@ function App() {
 
             <div className="skills-grid">
               {skillGroups.map((group, index) => (
-                <article className="skill-card" key={group.title}>
+                <article
+                  className="skill-card clickable-card"
+                  key={group.title}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    setSelectedItem({ type: "skill", data: group })
+                  }
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedItem({ type: "skill", data: group });
+                    }
+                  }}
+                >
                   <div className="skill-card-top">
                     <span className="skill-number">0{index + 1}</span>
                     <span className="skill-arrow">↗</span>
@@ -339,17 +373,35 @@ function App() {
 
             <div className="projects-list">
               {projects.map((project) => (
-                <article className="project-card" key={project.number}>
+                <article
+                  className="project-card clickable-card"
+                  key={project.number}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    setSelectedItem({ type: "project", data: project })
+                  }
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedItem({ type: "project", data: project });
+                    }
+                  }}
+                >
                   <div className={`project-art ${project.color}`}>
                     <span className="project-art-number">{project.number}</span>
                     <div className="project-art-icon">{project.icon}</div>
-                    <span className="project-art-caption">SELECTED PROJECT</span>
+                    <span className="project-art-caption">
+                      SELECTED PROJECT
+                    </span>
                   </div>
 
                   <div className="project-info">
                     <p className="eyebrow">{project.type}</p>
                     <h3>{project.name}</h3>
-                    <p className="project-description">{project.description}</p>
+                    <p className="project-description">
+                      {project.description}
+                    </p>
 
                     <div className="project-tech">
                       {project.tech.map((tech) => (
@@ -362,6 +414,7 @@ function App() {
                       href={project.github}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={(event) => event.stopPropagation()}
                     >
                       View on GitHub <span>↗</span>
                     </a>
@@ -398,7 +451,9 @@ function App() {
                     insights.
                   </p>
                   <div className="experience-tags">
-                    <span>Excel</span><span>Power BI</span><span>Data Analysis</span>
+                    <span>Excel</span>
+                    <span>Power BI</span>
+                    <span>Data Analysis</span>
                   </div>
                 </div>
               </article>
@@ -416,7 +471,9 @@ function App() {
                     visualization using Python.
                   </p>
                   <div className="experience-tags">
-                    <span>Python</span><span>Machine Learning</span><span>Data Visualization</span>
+                    <span>Python</span>
+                    <span>Machine Learning</span>
+                    <span>Data Visualization</span>
                   </div>
                 </div>
               </article>
@@ -429,12 +486,13 @@ function App() {
                   <h3>MERN Full Stack Development</h3>
                   <p className="experience-company">AICTE — EduSkills</p>
                   <p>
-                    Scheduled internship covering React, Node.js, Express,
-                    MongoDB, REST APIs, authentication, and a full-stack
-                    capstone project.
+                    Internship covering React, Node.js, Express, MongoDB, REST
+                    APIs, authentication, and a full-stack capstone project.
                   </p>
                   <div className="experience-tags">
-                    <span>React</span><span>Node.js</span><span>MongoDB</span>
+                    <span>React</span>
+                    <span>Node.js</span>
+                    <span>MongoDB</span>
                   </div>
                 </div>
               </article>
@@ -457,29 +515,70 @@ function App() {
                   opportunity, or a project collaboration? I'd love to hear
                   from you.
                 </p>
-                <a className="contact-email" href="mailto:pragyabisht25@gmail.com">
+
+                <a
+                  className="contact-email"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=pragyabisht25@gmail.com"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   pragyabisht25@gmail.com <span>↗</span>
                 </a>
+
                 <div className="contact-socials">
-                  <a href="https://github.com/pragyabisht25" target="_blank" rel="noreferrer">GitHub ↗</a>
-                  <a href="https://www.linkedin.com/in/pragyabisht25/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+                  <a
+                    href="https://github.com/pragyabisht25"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    GitHub ↗
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/pragyabisht25/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn ↗
+                  </a>
                 </div>
               </div>
 
               <form className="contact-form" onSubmit={handleContact}>
                 <label htmlFor="name">YOUR NAME</label>
-                <input id="name" name="name" placeholder="Enter your name" required />
+                <input
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                />
 
                 <label htmlFor="email">EMAIL ADDRESS</label>
-                <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                />
 
                 <label htmlFor="message">WHAT'S ON YOUR MIND?</label>
-                <textarea id="message" name="message" placeholder="Tell me a little about it..." rows="4" required />
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Tell me a little about it..."
+                  rows="4"
+                  required
+                />
 
-                <button className="button button-primary submit-button" type="submit">
+                <button
+                  className="button button-primary submit-button"
+                  type="submit"
+                >
                   Send a message <span>↗</span>
                 </button>
-                <p className="form-note">Opens your default email application to send the message.</p>
+                <p className="form-note">
+                  Opens Gmail with your message ready to send.
+                </p>
               </form>
             </div>
           </div>
@@ -490,13 +589,79 @@ function App() {
         <div className="container footer-inner">
           <a className="brand footer-brand" href="#home">
             <span className="brand-mark">P.</span>
-            <span>pragya<span className="brand-dot">.</span></span>
+            <span>
+              pragya<span className="brand-dot">.</span>
+            </span>
           </a>
           <p>Designed with curiosity. Built with code.</p>
-          <a href="#home" className="back-top">BACK TO TOP ↑</a>
+          <a href="#home" className="back-top">
+            BACK TO TOP ↑
+          </a>
           <span className="copyright">© 2026 PRAGYA BISHT</span>
         </div>
       </footer>
+
+      {selectedItem && (
+        <div
+          className="modal-overlay"
+          onClick={() => setSelectedItem(null)}
+        >
+          <div
+            className="details-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedItem.type} details`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              aria-label="Close details"
+              onClick={() => setSelectedItem(null)}
+            >
+              ×
+            </button>
+
+            <p className="eyebrow">
+              {selectedItem.type === "project"
+                ? selectedItem.data.type
+                : "TECH STACK"}
+            </p>
+
+            <h2>
+              {selectedItem.type === "project"
+                ? selectedItem.data.name
+                : selectedItem.data.title}
+            </h2>
+
+            <p>
+              {selectedItem.type === "project"
+                ? selectedItem.data.description
+                : `Technologies in the ${selectedItem.data.title.toLowerCase()} category that I have used in coursework and projects.`}
+            </p>
+
+            <div className="modal-tech">
+              {(selectedItem.type === "project"
+                ? selectedItem.data.tech
+                : selectedItem.data.skills
+              ).map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+
+            {selectedItem.type === "project" && (
+              <a
+                className="button button-primary"
+                href={selectedItem.data.github}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on GitHub ↗
+              </a>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }
