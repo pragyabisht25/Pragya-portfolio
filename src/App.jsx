@@ -190,7 +190,7 @@ function App() {
                     <i />
                     <i />
                   </span>
-                  <span className="card-label">DEV PROFILE / 2026</span>
+                  <span className="card-label"> PRAGYA BISHT / PORTFOLIO </span>
                 </div>
 
                 <div className="avatar">
@@ -240,7 +240,7 @@ function App() {
                 </span>
               </div>
 
-              <span className="visual-index">FIG. 01 — THE DEVELOPER</span>
+              
             </div>
           </div>
 
